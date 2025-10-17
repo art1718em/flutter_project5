@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import '../models/expense_model.dart';
+import '../widgets/expense_table.dart';
 
 class CarExpensesScreen extends StatelessWidget {
   final List<ExpenseModel> expenses;
   final double totalAmount;
   final VoidCallback onAddExpense;
+  final ValueChanged<String>? onRemove;
 
   const CarExpensesScreen({
     super.key,
     required this.expenses,
     required this.totalAmount,
     required this.onAddExpense,
+    this.onRemove,
   });
 
   @override
@@ -19,16 +22,9 @@ class CarExpensesScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Расходы: ${totalAmount.toStringAsFixed(2)} руб.'),
       ),
-      body: ListView.builder(
-        itemCount: expenses.length,
-        itemBuilder: (context, index) {
-          final expense = expenses[index];
-          return ListTile(
-            title: Text(expense.title),
-            subtitle: Text(expense.date.toString()),
-            trailing: Text('${expense.amount.toStringAsFixed(2)} руб.'),
-          );
-        },
+      body: ExpenseTable(
+        expenses: expenses,
+        onRemove: onRemove,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: onAddExpense,

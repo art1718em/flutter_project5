@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 class AddExpenseScreen extends StatefulWidget {
   final Function(String title, double amount) onSave;
+  final VoidCallback onCancel;
 
-  const AddExpenseScreen({super.key, required this.onSave});
+  const AddExpenseScreen({
+    super.key,
+    required this.onSave,
+    required this.onCancel,
+  });
 
   @override
   State<AddExpenseScreen> createState() => _AddExpenseScreenState();
@@ -26,7 +31,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       final title = _titleController.text;
       final amount = double.tryParse(_amountController.text) ?? 0.0;
       widget.onSave(title, amount);
-      Navigator.of(context).pop();
     }
   }
 
@@ -34,6 +38,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: widget.onCancel,
+        ),
         title: const Text('Добавить расход'),
         actions: [
           IconButton(
